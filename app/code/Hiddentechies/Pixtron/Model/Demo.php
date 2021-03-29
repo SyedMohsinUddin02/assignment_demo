@@ -53,20 +53,27 @@ class Demo
     /**
      * Fetch some data from API
      */
-    public function movie(): void
+    public function top_rated_movies()
     {
         $repositoryName = '3/movie/top_rated';
         $response = $this->doRequest($repositoryName);
         $status = $response->getStatusCode(); // 200 status code
         $responseBody = $response->getBody();
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
-        // Add your logic using $responseContent
 
-        $truedata = json_decode($responseContent,true);
-        for ($i = 0; $i < count($truedata['results']); $i++) {
-            echo $truedata['results'][$i]['title'];
-        }
-        die();
+        return $truedata = json_decode($responseContent,true);
+    }
+
+    public function upcoming_movies()
+    {
+        $repositoryName = '3/movie/upcoming';
+        $response = $this->doRequest($repositoryName);
+        $status = $response->getStatusCode(); // 200 status code
+        $responseBody = $response->getBody();
+        $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
+
+        return $truedata = json_decode($responseContent,true);
+
     }
 
     /**

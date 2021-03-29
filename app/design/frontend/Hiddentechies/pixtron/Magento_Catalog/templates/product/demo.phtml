@@ -1,6 +1,130 @@
 <?php
 
 $objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
-$moduleManager = $objectManager->get('\Hiddentechies\Pixtron\Model\Demo');
+$MovieAPI = $objectManager->get('\Hiddentechies\Pixtron\Model\Demo');
+$top_rated_raw_data = $MovieAPI->top_rated_movies();
+$upcoming_raw_data = $MovieAPI->upcoming_movies();
 
-$moduleManager->movie();
+?>
+
+<input class="on-page-search" placeholder="Search For Movies"></input>
+<div class = "container-fluid">
+    <div class = "row">
+        <div class = "col-lg-12 col-md-12 col-xs-12">
+            <div class = "heading">
+                <h3 class = "top-heading">Top Rated Movies</h3> 
+                <div class = "top-movie-wrap">
+                    <?php for($i = 0; $i < count($top_rated_raw_data['results']); $i++) {?>
+                        <div class = "top-movie">
+                            <img class = "movie-photo" src = "https://www.themoviedb.org/t/p/w220_and_h330_face<?= $top_rated_raw_data['results'][$i]['poster_path']; ?>"/>
+                            <p class = "movie-name"><?= $top_rated_raw_data['results'][$i]['title']; ?></p>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+            <div class = "heading">
+                <h3 class = "top-heading">Upcoming Movies</h3>
+                <div class = "upcoming-movie-wrap"> 
+                    <?php for($i = 0; $i < count($upcoming_raw_data['results']); $i++) {?>
+                        <div class = "upcoming-movie">
+                            <img class = "movie-photo" src = "https://www.themoviedb.org/t/p/w220_and_h330_face<?= $upcoming_raw_data['results'][$i]['poster_path']; ?>"/>
+                            <p class = "movie-name"><?= $upcoming_raw_data['results'][$i]['title']; ?></p>
+                        </div>    
+                    <?php } ?>
+                </div>    
+            </div>
+        </div>    
+    </div>
+</div>
+
+<style>
+
+.top-movie-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.top-heading{
+    text-align: center;
+    font-size: 25px;
+    margin-bottom: 30px;
+}
+
+p.movie-name {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: 600;
+    padding: 5px;
+
+}
+
+.top-movie {
+    margin-right: 40px;
+    width: 20%;
+    padding: 6px;
+
+}
+
+.upcoming-movie {
+    margin-right: 40px;
+    width: 20%;
+    padding: 6px;
+
+}
+
+.upcoming-movie-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+img.movie-photo {
+    border-radius: 5px;
+}
+
+.on-page-search {
+width: 50%;
+font-size: 14px;
+line-height: 26px;
+color: #787d85;
+background-color: #fcfcfc;
+border: 1px solid #e0e1e1;
+padding: 5px 15px;
+}
+
+/* Style the list */
+.demo-links {
+border-bottom: none;
+padding: 5px 5px;
+line-height: 36px;
+}
+
+/* Style the results */
+.results {
+background: #de1919;
+color: white;
+}
+.results:hover {
+background: #333;
+color: white;
+}
+</style>
+
+<script>
+define(['jquery'],function($){
+    jQuery(document).ready(function($) {
+        alert('hey');
+        $(".on-page-search").on("keyup", function () {
+            alert('hello');
+            var v = $(this).val();
+            $(".results").removeClass("results");
+            $("a.demo-links").each(function () {
+                if (v != "" && $(this).text().search(new RegExp(v,'gi')) != -1) {
+                    $(this).addClass("results");
+                }
+            });
+        });
+    });
+});
+</script>
